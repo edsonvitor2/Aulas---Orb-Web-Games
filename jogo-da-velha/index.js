@@ -1,3 +1,20 @@
+
+function listarDadosSessao(){
+    firebase.database().ref('sessaoX').on('value', snapshot => {
+        snapshot.forEach(element => {
+            
+        });
+    });
+}
+
+listarDadosSessao();
+
+function atualizarJogo(id, quadrado,jogador){
+    firebase.database().ref('sessaoX').child('q'+id).set(quadrado);
+    firebase.database().ref('sessaoX').child('proxJogador').set(jogador);
+}
+
+
 var jogador, vencedor = null;
 var jogadorSelecionado = document.getElementById('jogador-selecionado');
 var vencedorSelecionado = document.getElementById('vencedor-selecionado')
@@ -6,6 +23,7 @@ var vencedorSelecionado = document.getElementById('vencedor-selecionado')
 mudarJogador('X');
 
 function escolherQuadrado(id){
+    var valor;
     var quadrado = document.getElementById(id);
 
     if(vencedor !== null ){
@@ -18,6 +36,8 @@ function escolherQuadrado(id){
 
     quadrado.innerHTML = jogador;
     quadrado.style.color = '#aaa';
+    valor = jogador;
+    
 
     if(jogador === 'X'){
         jogador = 'O'
@@ -26,6 +46,9 @@ function escolherQuadrado(id){
     }
     mudarJogador(jogador);
     checarVencedor();
+
+    atualizarJogo(id,valor,jogador);
+    
 }
  
 function mudarJogador(valor){
