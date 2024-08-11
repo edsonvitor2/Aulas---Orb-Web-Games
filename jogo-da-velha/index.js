@@ -1,9 +1,19 @@
 
 function listarDadosSessao(){
     firebase.database().ref('sessaoX').on('value', snapshot => {
-        snapshot.forEach(element => {
-            
-        });
+        let data = snapshot.val();
+        
+        console.log(data)
+        document.getElementById("1").innerHTML = data.q1;
+        document.getElementById("2").innerHTML = data.q2;
+        document.getElementById("3").innerHTML = data.q3;
+        document.getElementById("4").innerHTML = data.q4;
+        document.getElementById("5").innerHTML = data.q5;
+        document.getElementById("6").innerHTML = data.q6;
+        document.getElementById("7").innerHTML = data.q7;
+        document.getElementById("8").innerHTML = data.q8;
+        document.getElementById("9").innerHTML = data.q9;
+
     });
 }
 
@@ -34,17 +44,24 @@ function escolherQuadrado(id){
         return;
     }
 
-    quadrado.innerHTML = jogador;
+    //quadrado.innerHTML = jogador;
     quadrado.style.color = '#aaa';
     valor = jogador;
     
+    firebase.database().ref('sessaoX').on('value', snapshot => {
+        let data = snapshot.val();
+        
+        console.log(data.proxJogador)
 
-    if(jogador === 'X'){
-        jogador = 'O'
-    }else{
-        jogador = 'X'
-    }
-    mudarJogador(jogador);
+        if(data.proxJogador === 'X'){
+            data.proxJogador = 'O'
+        }else{
+            data.proxJogador = 'X'
+        }
+        mudarJogador(data.proxJogador);
+    });
+
+    
     checarVencedor();
 
     atualizarJogo(id,valor,jogador);
