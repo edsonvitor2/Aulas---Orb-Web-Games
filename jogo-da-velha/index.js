@@ -1,9 +1,10 @@
 
 function listarDadosSessao(){
+    
     firebase.database().ref('sessaoX').on('value', snapshot => {
         let data = snapshot.val();
-        
-        console.log(data)
+        mudarJogador(data.proxJogador);
+
         document.getElementById("1").innerHTML = data.q1;
         document.getElementById("2").innerHTML = data.q2;
         document.getElementById("3").innerHTML = data.q3;
@@ -13,11 +14,12 @@ function listarDadosSessao(){
         document.getElementById("7").innerHTML = data.q7;
         document.getElementById("8").innerHTML = data.q8;
         document.getElementById("9").innerHTML = data.q9;
-
+        checarVencedor();
     });
+    
 }
 
-listarDadosSessao();
+setInterval(listarDadosSessao(), 1000);
 
 function atualizarJogo(id, quadrado,jogador){
     firebase.database().ref('sessaoX').child('q'+id).set(quadrado);
@@ -33,6 +35,7 @@ var vencedorSelecionado = document.getElementById('vencedor-selecionado')
 mudarJogador('X');
 
 function escolherQuadrado(id){
+    listarDadosSessao();
     var valor;
     var quadrado = document.getElementById(id);
 
@@ -62,8 +65,7 @@ function escolherQuadrado(id){
     });
 
     
-    checarVencedor();
-
+    
     atualizarJogo(id,valor,jogador);
     
 }
@@ -88,48 +90,56 @@ function checarVencedor(){
     {
         mudarcorquadrado(quadrado1, quadrado2, quadrado3)
         mudarVencedor(quadrado1);
+        console.log('ok');
         return;
     }
      if(checarSequencia(quadrado4, quadrado5, quadrado6))
     {
         mudarcorquadrado(quadrado4, quadrado5, quadrado6)
         mudarVencedor(quadrado4);
+        console.log('ok');
         return;
     }
     if(checarSequencia(quadrado7, quadrado8, quadrado9))
     {
         mudarcorquadrado(quadrado7, quadrado8, quadrado9)
         mudarVencedor(quadrado7);
+        console.log('ok');
         return;
     }
     if(checarSequencia(quadrado1, quadrado4, quadrado7))
     {
         mudarcorquadrado(quadrado1, quadrado4, quadrado7)
         mudarVencedor(quadrado1);
+        console.log('ok');
         return;
     }
         if(checarSequencia(quadrado2, quadrado5, quadrado8))
     {
         mudarcorquadrado(quadrado2, quadrado5, quadrado8)
         mudarVencedor(quadrado2);
+        console.log('ok');
         return;
     }
     if(checarSequencia(quadrado3, quadrado6, quadrado9))
     {
         mudarcorquadrado(quadrado3, quadrado6, quadrado9)
         mudarVencedor(quadrado3);
+        console.log('ok');
         return;
     }
     if(checarSequencia(quadrado1, quadrado5, quadrado9))
     {
         mudarcorquadrado(quadrado1, quadrado5, quadrado9)
         mudarVencedor(quadrado1);
+        console.log('ok');
         return;
     }
     if(checarSequencia(quadrado3, quadrado5, quadrado7))
     {
         mudarcorquadrado(quadrado3, quadrado5, quadrado7)
         mudarVencedor(quadrado3);
+        console.log('ok');
     }
 }
 function mudarVencedor(quadrado){
@@ -160,16 +170,16 @@ function reiniciar(){
 
     for (var i = 1; i <= 9; i++){
         var quadrado = document.getElementById(i)
-        quadrado.style.color = '#aaa';
+        quadrado.style.color = '#fff';
         quadrado.innerHTML='-';
+
+        let id = i;
+        let valor = '-';
+        
+
+        atualizarJogo(id,valor,'X');
     }
 }
-
-
-
-
-
-
 
 
 
