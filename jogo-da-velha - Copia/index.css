@@ -10,7 +10,7 @@ body{
     padding: 10px;
     font-size: 60px;
     margin: 5px;
-    cursor: pointer ;
+    cursor: pointer;
 }
 
 .jogador, .vencedor{

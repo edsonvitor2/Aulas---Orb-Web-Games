@@ -1,14 +1,10 @@
-var sassaoDeJogo = null;
+
 function listarDadosSessao(){
     
-    if(sassaoDeJogo == null){
-        return;
-    }
-
-    firebase.database().ref('sessoes').child(sassaoDeJogo).on('value', snapshot => {
+    firebase.database().ref('sessaoX').on('value', snapshot => {
         let data = snapshot.val();
         mudarJogador(data.proxJogador);
-        console.log(data);
+
         document.getElementById("1").innerHTML = data.q1;
         document.getElementById("2").innerHTML = data.q2;
         document.getElementById("3").innerHTML = data.q3;
@@ -24,7 +20,6 @@ function listarDadosSessao(){
 }
 
 setInterval(listarDadosSessao(), 1000);
-
 
 function atualizarJogo(id, quadrado,jogador){
     firebase.database().ref('sessaoX').child('q'+id).set(quadrado);
@@ -180,68 +175,12 @@ function reiniciar(){
 
         let id = i;
         let valor = '-';
+        
 
         atualizarJogo(id,valor,'X');
     }
 }
 
-function criarSessao() {
-    var numSessao;
-    firebase.database().ref('sessoes').once('value', snapshot => {
-        let data = snapshot.val();
-        if (data) {
-            // Se houver dados, calcula o próximo número de sessão
-            numSessao = Object.keys(data).length + 1;
-        } else {
-            // Se não houver dados, cria a primeira sessão
-            numSessao = 1;
-        }
-
-        console.log(numSessao);
-
-        // Cria a nova sessão com a chave 'SessaoX'
-        sassaoDeJogo = 'Sessao - ' + numSessao;
-
-        firebase.database().ref('sessoes').child('Sessao - ' + numSessao).set({
-            jogadorX:'entrou',
-            jogadorO:'-',
-            vencedor: '',
-            proxJogador: 'X',
-            q1: '-',
-            q2: '-',
-            q3: '-',
-            q4: '-',
-            q5: '-',
-            q6: '-',
-            q7: '-',
-            q8: '-',
-            q9: '-',
-        });
-    });
-}
-
-function encontrarSessaoDisponivel() {
-    firebase.database().ref('sessoes').once('value', snapshot => {
-        let data = snapshot.val();
-        if (data) {
-            for (let sessao in data) {
-                if (data[sessao].jogadorO === '-') {
-                    console.log("Sessão disponível encontrada:", sessao);
-
-                    sassaoDeJogo = sessao;
-
-                    firebase.database().ref('sessoes').child(sessao).update({
-                        jogadorO:'entrou'
-                    })
-                    return sessao; // Retorna a primeira sessão disponível
-                }
-            }
-            console.log("Nenhuma sessão disponível encontrada");
-        } else {
-            console.log("Nenhuma sessão encontrada");
-        }
-    });
-}
 
 
 mudarJogador('X');
